@@ -1,0 +1,27 @@
+/* 1. Define a animação das cores */
+@keyframes luzesColoridas {
+    0% { background-color: #ff0000; }   /* Vermelho */
+    25% { background-color: #00ff00; }  /* Verde */
+    50% { background-color: #0000ff; }  /* Azul */
+    75% { background-color: #ffff00; }  /* Amarelo */
+    100% { background-color: #ff0000; } /* Volta ao Vermelho */
+  }
+  
+  /* 2. Aplica a animação ao body */
+  body {
+    height: 100vh;
+    margin: 0;
+    /* Chama a animação: nome, duração, repetição, suavidade */
+    animation: luzesColoridas 10s infinite alternate;
+    
+    /* Adiciona uma transição suave para a mudança de cor */
+    transition: background-color 0.5s ease;
+  }
+  h1 {
+    text-align: center;
+        text-align: center;
+        font-family: Arial, sans-serif; /* Define a fonte */
+        font-size: 36px;                /* Define o tamanho */
+        color: #333;                    /* Define a cor */
+}
+

@@ -1,0 +1,38 @@
+<%# Botão concluir/reabrir %>
+
+<form method="POST"
+
+action="/tarefas/<%= t.id %>/concluir"
+
+class="inline">
+
+<% if (t.concluida) { %>
+
+<button class="btn-reabrir">
+
+🔄 Reabrir</button>
+
+<% } else { %>
+
+<button class="btn-concluir">
+
+✅ Concluir</button>
+
+<% } %>
+
+</form>
+<%# Título riscado se concluída %>
+
+<td>
+
+<% if (t.concluida) { %>
+
+<span style="text-decoration: line-through; color: #888;"><%= t.titulo %></span>
+
+<% } else { %>
+
+<strong><%= t.titulo %></strong>
+
+<% } %>
+
+</td>

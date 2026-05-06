@@ -1,0 +1,38 @@
+<%# Prioridade com cores %>
+
+<% if (t.prioridade === "alta") { %>
+
+<span class="prioridade alta">
+
+🔴 Alta
+
+</span>
+
+<% } else if (t.prioridade === "media") { %>
+
+<span class="prioridade media">
+
+🟡 Média</span>
+
+<% } else { %>
+
+<span class="prioridade baixa">
+
+🟢 Baixa</span>
+
+<% } %>
+<%# Título riscado se concluída %>
+
+<td>
+
+<% if (t.concluida) { %>
+
+<span style="text-decoration: line-through; color: #888;"><%= t.titulo %></span>
+
+<% } else { %>
+
+<strong><%= t.titulo %></strong>
+
+<% } %>
+
+</td>
