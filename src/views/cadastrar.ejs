@@ -1,3 +1,4 @@
+```ejs
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -13,17 +14,32 @@
 
   <div class="container">
 
-    <h1> Cadastro de Tarefas</h1>
+    <h1>📋 Cadastro de Tarefas</h1>
 
     <!-- Formulário de cadastro -->
     <form class="cadastro" method="POST" action="/tarefas">
 
+      <!-- Título -->
       <input
         type="text"
         name="titulo"
-        placeholder="Digite uma tarefa..."
+        placeholder="Digite o título da tarefa..."
         required
       >
+
+      <!-- Descrição -->
+      <textarea
+        name="descricao"
+        placeholder="Digite uma descrição..."
+      ></textarea>
+
+      <!-- Prioridade -->
+      <select name="prioridade" required>
+        <option value="">Selecione a prioridade</option>
+        <option value="alta">🔴 Alta</option>
+        <option value="media">🟡 Média</option>
+        <option value="baixa">🟢 Baixa</option>
+      </select>
 
       <button type="submit" class="btn-add">
         ➕ Adicionar
@@ -36,7 +52,12 @@
 
       <thead>
         <tr>
-          <th>Tarefa</th>
+          <th>ID</th>
+          <th>Título</th>
+          <th>Descrição</th>
+          <th>Prioridade</th>
+          <th>Status</th>
+          <th>Data</th>
           <th>Ações</th>
         </tr>
       </thead>
@@ -46,8 +67,8 @@
         <% if (tarefas.length === 0) { %>
 
           <tr>
-            <td colspan="2">
-              Nenhuma tarefa cadastrada.
+            <td colspan="7">
+              😢 Nenhuma tarefa cadastrada.
             </td>
           </tr>
 
@@ -56,6 +77,11 @@
         <% tarefas.forEach((t) => { %>
 
           <tr>
+
+            <!-- ID -->
+            <td>
+              <%= t.id %>
+            </td>
 
             <!-- Título -->
             <td>
@@ -76,9 +102,44 @@
 
             </td>
 
-            <!-- Botão concluir/reabrir -->
+            <!-- Descrição -->
+            <td>
+              <%= t.descricao || "Sem descrição" %>
+            </td>
+
+            <!-- Prioridade -->
             <td>
 
+              <% if (t.prioridade === "alta") { %>
+                🔴 Alta
+              <% } else if (t.prioridade === "media") { %>
+                🟡 Média
+              <% } else { %>
+                🟢 Baixa
+              <% } %>
+
+            </td>
+
+            <!-- Status -->
+            <td>
+
+              <% if (t.concluida) { %>
+                ✅ Concluída
+              <% } else { %>
+                ⏳ Pendente
+              <% } %>
+
+            </td>
+
+            <!-- Data -->
+            <td>
+              <%= t.dataCriacao %>
+            </td>
+
+            <!-- Ações -->
+            <td>
+
+              <!-- Concluir / Reabrir -->
               <form
                 method="POST"
                 action="/tarefas/<%= t.id %>/concluir"
@@ -115,3 +176,4 @@
 
 </body>
 </html>
+```
