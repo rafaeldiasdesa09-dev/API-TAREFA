@@ -1,38 +1,117 @@
-<%# Botão concluir/reabrir %>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<form method="POST"
+  <title>Cadastro de Tarefas</title>
 
-action="/tarefas/<%= t.id %>/concluir"
+  <link rel="stylesheet" href="/css/cadastrar.css">
+</head>
 
-class="inline">
+<body>
 
-<% if (t.concluida) { %>
+  <div class="container">
 
-<button class="btn-reabrir">
+    <h1> Cadastro de Tarefas</h1>
 
-🔄 Reabrir</button>
+    <!-- Formulário de cadastro -->
+    <form class="cadastro" method="POST" action="/tarefas">
 
-<% } else { %>
+      <input
+        type="text"
+        name="titulo"
+        placeholder="Digite uma tarefa..."
+        required
+      >
 
-<button class="btn-concluir">
+      <button type="submit" class="btn-add">
+        ➕ Adicionar
+      </button>
 
-✅ Concluir</button>
+    </form>
 
-<% } %>
+    <!-- Lista de tarefas -->
+    <table>
 
-</form>
-<%# Título riscado se concluída %>
+      <thead>
+        <tr>
+          <th>Tarefa</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
 
-<td>
+      <tbody>
 
-<% if (t.concluida) { %>
+        <% if (tarefas.length === 0) { %>
 
-<span style="text-decoration: line-through; color: #888;"><%= t.titulo %></span>
+          <tr>
+            <td colspan="2">
+              Nenhuma tarefa cadastrada.
+            </td>
+          </tr>
 
-<% } else { %>
+        <% } %>
 
-<strong><%= t.titulo %></strong>
+        <% tarefas.forEach((t) => { %>
 
-<% } %>
+          <tr>
 
-</td>
+            <!-- Título -->
+            <td>
+
+              <% if (t.concluida) { %>
+
+                <span class="concluida">
+                  <%= t.titulo %>
+                </span>
+
+              <% } else { %>
+
+                <strong>
+                  <%= t.titulo %>
+                </strong>
+
+              <% } %>
+
+            </td>
+
+            <!-- Botão concluir/reabrir -->
+            <td>
+
+              <form
+                method="POST"
+                action="/tarefas/<%= t.id %>/concluir"
+                class="inline"
+              >
+
+                <% if (t.concluida) { %>
+
+                  <button type="submit" class="btn-reabrir">
+                    🔄 Reabrir
+                  </button>
+
+                <% } else { %>
+
+                  <button type="submit" class="btn-concluir">
+                    ✅ Concluir
+                  </button>
+
+                <% } %>
+
+              </form>
+
+            </td>
+
+          </tr>
+
+        <% }) %>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</body>
+</html>
