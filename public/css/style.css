@@ -1,47 +1,44 @@
 /* 1. Define a animação das cores */
 @keyframes luzesColoridas {
-    0% { background-color: #adfcff; }   /* Vermelho */
-    25% { background-color: #5fb5b8; }  /* Verde */
-    50% { background-color: #347b7e; }  /* Azul */
-    75% { background-color: #5fb5b8; }  /* Amarelo */
-    100% { background-color: #adfcff; } /* Volta ao Vermelho */
-  }
-  
-  /* 2. Aplica a animação ao body */
-  body {
-    height: 100vh;
-    margin: 0;
-    /* Chama a animação: nome, duração, repetição, suavidade */
-    animation: luzesColoridas 10s infinite alternate;
-    
-    /* Adiciona uma transição suave para a mudança de cor */
-    transition: background-color 0.5s ease;
-  }
-
-  h1 {
-    text-align: center;
-    font-family: Arial, sans-serif;
-    font-size: 60px;
-    color: #333;
-    border-radius: 8px;
-    padding: 15px;
-    margin-top: 30px; /* Adiciona espaço acima */
-    margin-bottom: 0; /* Define margens específicas se necessário */
+  0% { background-color: #adfcff; }
+  25% { background-color: #5fb5b8; }
+  50% { background-color: #347b7e; }
+  75% { background-color: #5fb5b8; }
+  100% { background-color: #adfcff; }
 }
 
+/* 2. Centraliza tudo */
+body {
+  height: 100vh;
+  margin: 0;
+
+  /* FLEXBOX */
+  display: flex;
+  flex-direction: column;
+
+  /* Centralização horizontal */
+  align-items: center;
+
+  /* Centralização vertical */
+  justify-content: center;
+
+  animation: luzesColoridas 10s infinite alternate;
+  transition: background-color 0.5s ease;
+}
+
+h1 {
+  font-family: Arial, sans-serif;
+  font-size: 60px;
+  color: #333;
+  margin-bottom: 20px;
+}
 
 a {
-  display: block; /* Transforma em bloco para aceitar margens laterais */
-  width: fit-content; /* Faz o botão ter apenas o tamanho do texto */
-  margin: 0 auto; /* Centraliza horizontalmente */
-  
-  /* Seus estilos originais */
-  text-align: center;
+  text-decoration: none;
   font-family: Arial, sans-serif;
   font-size: 36px;
   color: #333;
   background-color: #f0f0f0;
   border-radius: 8px;
-  padding: 15px;
+  padding: 15px 25px;
 }
-
