@@ -1,18 +1,20 @@
 // src/controllers/tarefaController.ts
 
 import { Request, Response } from "express";
-
 import * as TarefaModel from "../models/tarefaModel";
-
 import { ApiResponse, Tarefa, FiltroQuery } from "../interfaces";
+export async function paginaTarefas(req: Request, res: Response) {
+  const tarefas = await TarefaModel.listarTodas();
+
+  return res.render("tarefas", { tarefas });
+}
 
 
-// LISTAR
+// LISTAR (API JSON)
 export async function listar(
   req: Request<{},{},{},FiltroQuery>,
   res: Response
 ) {
-
   try {
 
     let tarefas = await TarefaModel.listarTodas();
@@ -31,22 +33,22 @@ export async function listar(
       );
     }
 
-    res.json({
+    return res.json({
       sucesso: true,
       dados: tarefas
     } as ApiResponse<Tarefa[]>);
 
-  } catch {
+  } catch (err) {
+    console.error(err);
 
-    res.status(500).render("erro", {
+    return res.status(500).render("erro", {
       mensagem: "Erro interno ao listar tarefas"
     });
-
   }
 }
 
 
-// CRIAR
+// CRIAR (API JSON)
 export async function criar(req: Request, res: Response) {
 
   try {
@@ -64,11 +66,9 @@ export async function criar(req: Request, res: Response) {
     }
 
     if (erros.length > 0) {
-
       return res.status(400).render("erro", {
         mensagem: erros.join(", ")
       });
-
     }
 
     const nova = await TarefaModel.criar({
@@ -77,22 +77,22 @@ export async function criar(req: Request, res: Response) {
       prioridade
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       sucesso: true,
       dados: nova
     });
 
-  } catch {
+  } catch (err) {
+    console.error(err);
 
-    res.status(500).render("erro", {
+    return res.status(500).render("erro", {
       mensagem: "Erro interno ao criar tarefa"
     });
-
   }
 }
 
 
-// DETALHE
+// DETALHE (EJS)
 export async function detalhe(req: Request, res: Response) {
 
   try {
@@ -101,25 +101,23 @@ export async function detalhe(req: Request, res: Response) {
 
     const tarefas = await TarefaModel.listarTodas();
 
-    const busca = tarefas.find(t => t.id === id);
+    const tarefa = tarefas.find(t => t.id === id);
 
-    if (!busca) {
-
+    if (!tarefa) {
       return res.status(404).render("erro", {
         mensagem: "Tarefa não encontrada"
       });
-
     }
 
-    res.render("detalhe", {
-      tarefa: busca
+    return res.render("detalhe", {
+      tarefa
     });
 
-  } catch {
+  } catch (err) {
+    console.error(err);
 
-    res.status(500).render("erro", {
-      mensagem: "Erro ao buscar tarefa"
+    return res.status(500).render("erro", {
+      mensagem: "Erro interno ao buscar tarefa"
     });
-
   }
 }

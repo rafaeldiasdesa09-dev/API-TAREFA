@@ -1,26 +1,31 @@
-// src/routes/tarefaroutes.ts
-
 import { Router } from "express";
 
 import {
   listar,
   criar,
-  detalhe
+  detalhe,
+  paginaTarefas
 } from "../controllers/tarefacontroller";
 
 const router = Router();
 
 
-// LISTAR TAREFAS
-router.get("/tarefas", listar);
+// 🔥 AGORA ISSO RENDERIZA A PÁGINA
+router.get("/pagina/tarefas.ejs", paginaTarefas);
 
 
-// DETALHE DA TAREFA
-router.get("/tarefas/:id", detalhe);
+// DETALHE
+router.get("pagina/tarefas/:id", detalhe);
 
 
-// CRIAR TAREFA
-router.post("/tarefas", criar);
+// CRIAR
+router.post("pagina/tarefas", criar);
+
+
+// CADASTRO
+router.get("pagina/cadastrar", (req, res) => {
+  res.render("cadastrar", { tarefas: [] });
+});
 
 
 export default router;
