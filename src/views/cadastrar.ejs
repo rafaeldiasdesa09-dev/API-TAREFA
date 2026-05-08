@@ -1,38 +1,179 @@
-<%# Botão concluir/reabrir %>
+```ejs
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<form method="POST"
+  <title>Cadastro de Tarefas</title>
 
-action="/tarefas/<%= t.id %>/concluir"
+  <link rel="stylesheet" href="/css/cadastrar.css">
+</head>
 
-class="inline">
+<body>
 
-<% if (t.concluida) { %>
+  <div class="container">
 
-<button class="btn-reabrir">
+    <h1>📋 Cadastro de Tarefas</h1>
 
-🔄 Reabrir</button>
+    <!-- Formulário de cadastro -->
+    <form class="cadastro" method="POST" action="/tarefas">
 
-<% } else { %>
+      <!-- Título -->
+      <input
+        type="text"
+        name="titulo"
+        placeholder="Digite o título da tarefa..."
+        required
+      >
 
-<button class="btn-concluir">
+      <!-- Descrição -->
+      <textarea
+        name="descricao"
+        placeholder="Digite uma descrição..."
+      ></textarea>
 
-✅ Concluir</button>
+      <!-- Prioridade -->
+      <select name="prioridade" required>
+        <option value="">Selecione a prioridade</option>
+        <option value="alta">🔴 Alta</option>
+        <option value="media">🟡 Média</option>
+        <option value="baixa">🟢 Baixa</option>
+      </select>
 
-<% } %>
+      <button type="submit" class="btn-add">
+        ➕ Adicionar
+      </button>
 
-</form>
-<%# Título riscado se concluída %>
+    </form>
 
-<td>
+    <!-- Lista de tarefas -->
+    <table>
 
-<% if (t.concluida) { %>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Título</th>
+          <th>Descrição</th>
+          <th>Prioridade</th>
+          <th>Status</th>
+          <th>Data</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
 
-<span style="text-decoration: line-through; color: #888;"><%= t.titulo %></span>
+      <tbody>
 
-<% } else { %>
+        <% if (tarefas.length === 0) { %>
 
-<strong><%= t.titulo %></strong>
+          <tr>
+            <td colspan="7">
+              😢 Nenhuma tarefa cadastrada.
+            </td>
+          </tr>
 
-<% } %>
+        <% } %>
 
-</td>
+        <% tarefas.forEach((t) => { %>
+
+          <tr>
+
+            <!-- ID -->
+            <td>
+              <%= t.id %>
+            </td>
+
+            <!-- Título -->
+            <td>
+
+              <% if (t.concluida) { %>
+
+                <span class="concluida">
+                  <%= t.titulo %>
+                </span>
+
+              <% } else { %>
+
+                <strong>
+                  <%= t.titulo %>
+                </strong>
+
+              <% } %>
+
+            </td>
+
+            <!-- Descrição -->
+            <td>
+              <%= t.descricao || "Sem descrição" %>
+            </td>
+
+            <!-- Prioridade -->
+            <td>
+
+              <% if (t.prioridade === "alta") { %>
+                🔴 Alta
+              <% } else if (t.prioridade === "media") { %>
+                🟡 Média
+              <% } else { %>
+                🟢 Baixa
+              <% } %>
+
+            </td>
+
+            <!-- Status -->
+            <td>
+
+              <% if (t.concluida) { %>
+                ✅ Concluída
+              <% } else { %>
+                ⏳ Pendente
+              <% } %>
+
+            </td>
+
+            <!-- Data -->
+            <td>
+              <%= t.dataCriacao %>
+            </td>
+
+            <!-- Ações -->
+            <td>
+
+              <!-- Concluir / Reabrir -->
+              <form
+                method="POST"
+                action="/tarefas/<%= t.id %>/concluir"
+                class="inline"
+              >
+
+                <% if (t.concluida) { %>
+
+                  <button type="submit" class="btn-reabrir">
+                    🔄 Reabrir
+                  </button>
+
+                <% } else { %>
+
+                  <button type="submit" class="btn-concluir">
+                    ✅ Concluir
+                  </button>
+
+                <% } %>
+
+              </form>
+
+            </td>
+
+          </tr>
+
+        <% }) %>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</body>
+</html>
+```
