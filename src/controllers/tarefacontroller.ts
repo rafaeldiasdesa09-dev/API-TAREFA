@@ -6,42 +6,120 @@ import * as TarefaModel from "../models/tarefaModel";
 
 import { ApiResponse, Tarefa, FiltroQuery } from "../interfaces";
 
-export async function listar(req: Request<{},{},{},FiltroQuery>, res: Response) {
 
-try {
+// LISTAR
+export async function listar(
+  req: Request<{},{},{},FiltroQuery>,
+  res: Response
+) {
 
-let tarefas = await TarefaModel.listarTodas();
+  try {
 
-if (req.query.concluida === "true") tarefas = tarefas.filter(t => t.concluida);
+    let tarefas = await TarefaModel.listarTodas();
 
-if (req.query.concluida === "false") tarefas = tarefas.filter(t => !t.concluida);
+    if (req.query.concluida === "true") {
+      tarefas = tarefas.filter(t => t.concluida);
+    }
 
-if (req.query.prioridade) tarefas = tarefas.filter(t => t.prioridade === req.query.prioridade);
+    if (req.query.concluida === "false") {
+      tarefas = tarefas.filter(t => !t.concluida);
+    }
 
-res.json({ sucesso: true, dados: tarefas } as ApiResponse<Tarefa[]>);
+    if (req.query.prioridade) {
+      tarefas = tarefas.filter(
+        t => t.prioridade === req.query.prioridade
+      );
+    }
 
-} catch { res.status(500).json({ sucesso: false, erro: 'Erro interno' }); }
+    res.json({
+      sucesso: true,
+      dados: tarefas
+    } as ApiResponse<Tarefa[]>);
 
+  } catch {
+
+    res.status(500).render("erro", {
+      mensagem: "Erro interno ao listar tarefas"
+    });
+
+  }
 }
 
+
+// CRIAR
 export async function criar(req: Request, res: Response) {
 
-try {
+  try {
 
-const { titulo, descricao, prioridade } = req.body;
+    const { titulo, descricao, prioridade } = req.body;
 
-const erros: string[] = [];
+    const erros: string[] = [];
 
-if (!titulo || typeof titulo !== "string") erros.push("titulo é obrigatório");
+    if (!titulo || typeof titulo !== "string") {
+      erros.push("titulo é obrigatório");
+    }
 
-if (!["alta","media","baixa"].includes(prioridade)) erros.push("prioridade inválida");
+    if (!["alta","media","baixa"].includes(prioridade)) {
+      erros.push("prioridade inválida");
+    }
 
-if (erros.length > 0) { res.status(400).json({ sucesso:false, erros }); return; }
+    if (erros.length > 0) {
 
-const nova = await TarefaModel.criar({ titulo, descricao, prioridade });
+      return res.status(400).render("erro", {
+        mensagem: erros.join(", ")
+      });
 
-res.status(201).json({ sucesso: true, dados: nova });
+    }
 
-} catch { res.status(500).json({ sucesso: false, erro: 'Erro interno' }); }
+    const nova = await TarefaModel.criar({
+      titulo,
+      descricao,
+      prioridade
+    });
 
+    res.status(201).json({
+      sucesso: true,
+      dados: nova
+    });
+
+  } catch {
+
+    res.status(500).render("erro", {
+      mensagem: "Erro interno ao criar tarefa"
+    });
+
+  }
+}
+
+
+// DETALHE
+export async function detalhe(req: Request, res: Response) {
+
+  try {
+
+    const id = Number(req.params.id);
+
+    const tarefas = await TarefaModel.listarTodas();
+
+    const busca = tarefas.find(t => t.id === id);
+
+    if (!busca) {
+
+      return res.status(404).render("erro", {
+        mensagem: "Tarefa não encontrada"
+      });
+
+    }
+
+    res.render("detalhe", {
+      tarefa: busca
+    });
+
+  } catch {
+
+    res.status(500).render("erro", {
+      mensagem: "Erro ao buscar tarefa"
+    });
+
+  }
 }
