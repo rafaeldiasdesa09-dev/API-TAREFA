@@ -61,7 +61,7 @@ export async function criar(req: Request, res: Response) {
       erros.push("titulo é obrigatório");
     }
 
-    if (!["alta","media","baixa"].includes(prioridade)) {
+    if (!["alta", "media", "baixa"].includes(prioridade)) {
       erros.push("prioridade inválida");
     }
 
@@ -71,16 +71,15 @@ export async function criar(req: Request, res: Response) {
       });
     }
 
-    const nova = await TarefaModel.criar({
+    // salva a tarefa
+    await TarefaModel.criar({
       titulo,
       descricao,
       prioridade
     });
 
-    return res.status(201).json({
-      sucesso: true,
-      dados: nova
-    });
+    // 🔥 volta para a lista
+    return res.redirect("/tarefas");
 
   } catch (err) {
     console.error(err);
@@ -90,7 +89,6 @@ export async function criar(req: Request, res: Response) {
     });
   }
 }
-
 
 // DETALHE (EJS)
 export async function detalhe(req: Request, res: Response) {
@@ -118,6 +116,7 @@ export async function detalhe(req: Request, res: Response) {
 
     return res.status(500).render("erro", {
       mensagem: "Erro interno ao buscar tarefa"
+      
     });
   }
 }
