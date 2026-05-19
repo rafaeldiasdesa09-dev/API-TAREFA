@@ -120,3 +120,11 @@ export async function detalhe(req: Request, res: Response) {
     });
   }
 }
+
+export async function paginaCadastrar(req: Request, res: Response) {
+  try {
+    res.render("cadastrar", { tarefas: [] });
+  } catch {
+    return res.status(500).json({sucesso: false, erro: "(GET) Erro interno do servidor"})
+  }
+}

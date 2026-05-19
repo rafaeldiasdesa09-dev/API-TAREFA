@@ -4,7 +4,8 @@ import {
   listar,
   criar,
   detalhe,
-  paginaTarefas
+  paginaTarefas,
+  paginaCadastrar
 } from "../controllers/tarefacontroller";
 
 const router = Router();
@@ -23,9 +24,7 @@ router.post("pagina/tarefas", criar);
 
 
 // CADASTRO
-router.get("pagina/cadastrar", (req, res) => {
-  res.render("cadastrar", { tarefas: [] });
-});
+router.get("pagina/cadastrar", paginaCadastrar);
 
 
 export default router;
