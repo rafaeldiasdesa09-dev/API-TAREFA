@@ -4,9 +4,10 @@ import express from "express";
 import path from "path";
 
 import tarefaRoutes from "./routes/tarefaroutes";
+import * as logger from "./middlewares/logger"
 
 const app = express();
-
+app.use(logger.logger)
 
 // CONFIGURAÇÕES
 app.set("view engine", "ejs");
